@@ -36,6 +36,7 @@
             this.lblParticlesCount = new System.Windows.Forms.Label();
             this.lblRainSpeed = new System.Windows.Forms.Label();
             this.tbRainSpeed = new System.Windows.Forms.TrackBar();
+            this.btnNight = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbParticlesPerTick)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbRainSpeed)).BeginInit();
@@ -89,15 +90,16 @@
             // lblRainSpeed
             // 
             this.lblRainSpeed.AutoSize = true;
-            this.lblRainSpeed.Location = new System.Drawing.Point(1200, 162);
+            this.lblRainSpeed.Location = new System.Drawing.Point(1186, 162);
             this.lblRainSpeed.Name = "lblRainSpeed";
             this.lblRainSpeed.Size = new System.Drawing.Size(111, 16);
             this.lblRainSpeed.TabIndex = 13;
             this.lblRainSpeed.Text = "Скорость дождя";
+            this.lblRainSpeed.Click += new System.EventHandler(this.lblRainSpeed_Click);
             // 
             // tbRainSpeed
             // 
-            this.tbRainSpeed.Location = new System.Drawing.Point(1189, 181);
+            this.tbRainSpeed.Location = new System.Drawing.Point(1175, 181);
             this.tbRainSpeed.Maximum = 30;
             this.tbRainSpeed.Minimum = 2;
             this.tbRainSpeed.Name = "tbRainSpeed";
@@ -106,11 +108,22 @@
             this.tbRainSpeed.Value = 2;
             this.tbRainSpeed.Scroll += new System.EventHandler(this.tbRainSpeed_Scroll);
             // 
+            // btnNight
+            // 
+            this.btnNight.Location = new System.Drawing.Point(1175, 245);
+            this.btnNight.Name = "btnNight";
+            this.btnNight.Size = new System.Drawing.Size(141, 45);
+            this.btnNight.TabIndex = 14;
+            this.btnNight.Text = "Наступила ночь";
+            this.btnNight.UseVisualStyleBackColor = true;
+            this.btnNight.Click += new System.EventHandler(this.btnNight_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1375, 779);
+            this.Controls.Add(this.btnNight);
             this.Controls.Add(this.lblRainSpeed);
             this.Controls.Add(this.tbRainSpeed);
             this.Controls.Add(this.lblParticlesCount);
@@ -137,6 +150,7 @@
         private System.Windows.Forms.Label lblParticlesCount;
         private System.Windows.Forms.Label lblRainSpeed;
         private System.Windows.Forms.TrackBar tbRainSpeed;
+        private System.Windows.Forms.Button btnNight;
     }
 }
 

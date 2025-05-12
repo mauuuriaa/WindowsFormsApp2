@@ -80,62 +80,51 @@ namespace WindowsFormsApp2
         public float SpeedY;
         public float Length;
         public Color Color;
-        public float Opacity;
-        public bool IsAlive = true;
+        public float Opacity = 0.8f;
+        private bool fading = false;
 
-        public ParticleRain(float x, float y, float speedY, float length, Color color, float opacity = 0.8f)
+        public ParticleRain(float x, float y, float speedY, float length, Color color)
         {
             X = x;
             Y = y;
             SpeedY = speedY;
             Length = length;
             Color = color;
-            Opacity = opacity;
         }
 
         public void Update(Grass grass, List<Flower> flowers)
         {
-            Y += SpeedY;
+            if (!fading)
+                Y += SpeedY;
+            else
+                Opacity -= 0.08f; // плавное исчезновение
 
-            // Проверка столкновения с травой
-            if (Y + Length > grass.Area.Top)
-                IsAlive = false;
+            if (Opacity < 0) Opacity = 0;
+        }
 
-            // Проверка столкновения с цветами
-            foreach (var flower in flowers)
-            {
-                if (flower.IsRainHit(X, Y))
-                {
-                    flower.Grow();
-                    IsAlive = false;
-                    break;
-                }
-            }
+        public void StartFade()
+        {
+            fading = true;
         }
 
         public void Draw(Graphics g)
         {
-            // Тело капли - вытянутый эллипс
-            using (SolidBrush brush = new SolidBrush(Color.FromArgb(160, Color)))
+            using (SolidBrush brush = new SolidBrush(Color.FromArgb((int)(160 * Opacity), Color)))
             {
                 g.FillEllipse(brush, X - 2, Y, 4, Length);
             }
-
-            // Светлый блик - маленький эллипс сверху (эффект мокроты)
-            using (SolidBrush highlight = new SolidBrush(Color.FromArgb(180, Color.White)))
+            using (SolidBrush highlight = new SolidBrush(Color.FromArgb((int)(180 * Opacity), Color.White)))
             {
                 g.FillEllipse(highlight, X - 1, Y + Length * 0.15f, 2, 2);
             }
-
-            // Контур - тонкая полупрозрачная линия
-            using (Pen pen = new Pen(Color.FromArgb(120, Color), 1))
+            using (Pen pen = new Pen(Color.FromArgb((int)(120 * Opacity), Color), 1))
             {
                 g.DrawEllipse(pen, X - 2, Y, 4, Length);
             }
         }
     }
 
-
+    // Класс травы
     public class Grass
     {
         public RectangleF Area;
@@ -151,3 +140,4 @@ namespace WindowsFormsApp2
         }
     }
 }
+
