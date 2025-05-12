@@ -15,7 +15,7 @@ namespace WindowsFormsApp2
         public int PetalCount = 7;
         public float PetalLength = 60;
         public float PetalWidth = 40;
-        public float PetalGrowStep = 2.5f;
+        public float PetalGrowStep = 1.0f; // Уменьшено для медленного роста
         public float MaxPetalLength = 90;
         public float MinPetalLength = 40;
         public float CenterRadius = 38;

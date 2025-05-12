@@ -24,13 +24,13 @@ namespace WindowsFormsApp2
         public Form1()
         {
             InitializeComponent();
-            picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
-            
-            // Размер формы и PictureBox
-            this.Width = 1200;
-            this.Height = 650;
-            picDisplay.Width = 1200;
 
+            // Размеры формы и PictureBox
+            this.Width = 1250;
+            this.Height = 800;
+            picDisplay.Width = 1200;
+            picDisplay.Height = 650;
+            picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
             // Создать траву
             grass = new Grass(picDisplay.Width, picDisplay.Height, 60);
@@ -38,11 +38,16 @@ namespace WindowsFormsApp2
             // Расположить 5 цветков
             for (int i = 0; i < 5; i++)
             {
-                float x = 120 + i * 160;
+                float x = 120 + i * 200;
                 float y = picDisplay.Height - 70;
                 flowers.Add(new Flower(x, y));
             }
 
+            // Привязка значений трекбаров к переменным
+            rainParticlesPerTick = tbParticlesPerTick.Value;
+            rainSpeed = tbRainSpeed.Value;
+            lblParticlesCount.Text = $"Капель за тик: {rainParticlesPerTick}";
+            lblRainSpeed.Text = $"Скорость дождя: {rainSpeed}";
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -60,22 +65,31 @@ namespace WindowsFormsApp2
             // Обновление частиц дождя
             for (int i = rain.Count - 1; i >= 0; i--)
             {
-                rain[i].Update();
+                rain[i].Update(grass, flowers);
+
+                // Проверка столкновения с травой
+                if (rain[i].Y + rain[i].Length >= grass.Area.Top)
+                {
+                    rain.RemoveAt(i);
+                    continue;
+                }
+
+                // Проверка столкновения с лепестками
                 bool hit = false;
                 foreach (var flower in flowers)
                 {
                     if (flower.IsRainHit(rain[i].X, rain[i].Y))
                     {
-                        flower.Grow();
+                        flower.Grow(); // рост лепестка
                         hit = true;
                         break;
                     }
                 }
-                if (hit || rain[i].Y > picDisplay.Height)
+                if (hit)
                     rain.RemoveAt(i);
             }
 
-            // Обновление цветков
+            // Обновление цветков (опадание лепестков)
             foreach (var flower in flowers)
                 flower.UpdatePetals();
 
@@ -97,22 +111,13 @@ namespace WindowsFormsApp2
                 foreach (var drop in rain)
                     drop.Draw(g);
             }
-
         }
 
         private void btnToggleRain_Click(object sender, EventArgs e)
         {
             rainEnabled = !rainEnabled;
             btnToggleRain.Text = rainEnabled ? "Выключить дождик" : "Включить дождик";
-        
         }
-
-        
-
-        // Остальные обработчики оставляем как есть
-        private void picDisplay_MouseMove(object sender, MouseEventArgs e) { }
-       
-        private void Form1_Load(object sender, EventArgs e) { }
 
         private void tbParticlesPerTick_Scroll(object sender, EventArgs e)
         {
@@ -125,6 +130,10 @@ namespace WindowsFormsApp2
             rainSpeed = tbRainSpeed.Value;
             lblRainSpeed.Text = $"Скорость дождя: {rainSpeed}";
         }
+
+        // Остальные обработчики оставляем как есть
+        private void picDisplay_MouseMove(object sender, MouseEventArgs e) { }
+        private void Form1_Load(object sender, EventArgs e) { }
     }
 
 }

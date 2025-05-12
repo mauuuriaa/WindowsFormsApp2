@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,26 +80,57 @@ namespace WindowsFormsApp2
         public float SpeedY;
         public float Length;
         public Color Color;
+        public float Opacity;
+        public bool IsAlive = true;
 
-        public ParticleRain(float x, float y, float speedY, float length, Color color)
+        public ParticleRain(float x, float y, float speedY, float length, Color color, float opacity = 0.8f)
         {
             X = x;
             Y = y;
             SpeedY = speedY;
             Length = length;
             Color = color;
+            Opacity = opacity;
         }
 
-        public void Update()
+        public void Update(Grass grass, List<Flower> flowers)
         {
             Y += SpeedY;
+
+            // Проверка столкновения с травой
+            if (Y + Length > grass.Area.Top)
+                IsAlive = false;
+
+            // Проверка столкновения с цветами
+            foreach (var flower in flowers)
+            {
+                if (flower.IsRainHit(X, Y))
+                {
+                    flower.Grow();
+                    IsAlive = false;
+                    break;
+                }
+            }
         }
 
         public void Draw(Graphics g)
         {
-            using (var pen = new Pen(Color, 2))
+            // Тело капли - вытянутый эллипс
+            using (SolidBrush brush = new SolidBrush(Color.FromArgb(160, Color)))
             {
-                g.DrawLine(pen, X, Y, X, Y + Length);
+                g.FillEllipse(brush, X - 2, Y, 4, Length);
+            }
+
+            // Светлый блик - маленький эллипс сверху (эффект мокроты)
+            using (SolidBrush highlight = new SolidBrush(Color.FromArgb(180, Color.White)))
+            {
+                g.FillEllipse(highlight, X - 1, Y + Length * 0.15f, 2, 2);
+            }
+
+            // Контур - тонкая полупрозрачная линия
+            using (Pen pen = new Pen(Color.FromArgb(120, Color), 1))
+            {
+                g.DrawEllipse(pen, X - 2, Y, 4, Length);
             }
         }
     }
