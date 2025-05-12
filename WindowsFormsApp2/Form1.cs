@@ -11,20 +11,24 @@ using System.Windows.Forms;
 namespace WindowsFormsApp2
 {
     public partial class Form1 : Form
-
     {
-        List<Emitter> emitters = new List<Emitter>();
-        TopEmitter emitter;
+        List<Flower> flowers = new List<Flower>();
+        Grass grass;
+        bool rainEnabled = false;
+        Random rnd = new Random();
 
-        GravityPoint sink; // статичный гравитрон-притягиватель
-        SourceGravityPoint source; // двигающийся гравитрон-источник
+        // Система частиц дождя
+        TopEmitter emitter;
+        int particlesPerTickBeforePause;
 
         public Form1()
         {
             InitializeComponent();
-            picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
+            this.DoubleBuffered = true;
+            this.Width = 900;
+            this.Height = 650;
 
-            // Создаем верхний эмиттер
+            // Инициализация эмиттера дождя
             emitter = new TopEmitter
             {
                 Direction = 180,
@@ -34,87 +38,88 @@ namespace WindowsFormsApp2
                 ColorFrom = Color.Cyan,
                 ColorTo = Color.FromArgb(0, Color.Blue),
                 ParticlesPerTick = 10,
-                X = picDisplay.Width / 2,
+                X = this.Width / 2,
                 Y = 0,
-                Width = picDisplay.Width
+                Width = this.Width
             };
-            emitters.Add(emitter);
 
-            tbParticlesPerTick.Value = emitter.ParticlesPerTick;
-            tbParticlesPerTick.Scroll += tbParticlesPerTick_Scroll;
-            lblParticlesCount.Text = $"Частиц за тик: {tbParticlesPerTick.Value}";
-            lblDegreeCount.Text = $"Угол поворота: {theDirection.Value}";
-            lblOpacityCount.Text = $"Прозрачность: {TbOpacity.Value}";
+            // Создать траву
+            grass = new Grass(this.Width, this.Height, 60);
 
-            // Статичный гравитрон-поглотитель (внизу экрана)
-            sink = new GravityPoint
+            // Расположить 5 цветков
+            for (int i = 0; i < 5; i++)
             {
-                X = picDisplay.Width / 2,
-                Y = picDisplay.Height - 50,
-                Power = 200
-            };
-            emitter.impactPoints.Add(sink);
+                float x = 120 + i * 160;
+                float y = this.Height - 70;
+                flowers.Add(new Flower(x, y));
+            }
 
-            // Двигающийся гравитрон-источник
-            source = new SourceGravityPoint
-            {
-                X = emitter.X,
-                Y = emitter.Y,
-                Power = 50
-            };
-            emitter.impactPoints.Add(source);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             emitter.UpdateState();
 
-            using (var g = Graphics.FromImage(picDisplay.Image))
+            // Обработка столкновений частиц дождя с цветами
+            foreach (var particle in emitter.particles.ToList())
             {
-                g.Clear(Color.Black);
-                emitter.Render(g);
+                foreach (var flower in flowers)
+                {
+                    if (flower.IsRainHit(particle.X, particle.Y))
+                    {
+                        flower.Grow();
+                        emitter.particles.Remove(particle); // Удаляем частицу при попадании
+                        break;
+                    }
+                }
             }
 
-            picDisplay.Invalidate();
-        }
+            // Обновление цветков
+            foreach (var flower in flowers)
+                flower.UpdatePetals();
 
-        private void picDisplay_MouseMove(object sender, MouseEventArgs e)
-        {
-            emitter.MousePositionX = e.X;
-            emitter.MousePositionY = e.Y;
-
-            // Перемещаем гравитрон-источник к мыши
-            source.X = e.X;
-            source.Y = e.Y;
-        }
-
-        private void theDirection_Scroll(object sender, EventArgs e)
-        {
-            emitter.Direction = theDirection.Value;
-            lblDegreeCount.Text = $"Угол поворота: {theDirection.Value}";
-        }
-
-        private void tbParticlesPerTick_Scroll(object sender, EventArgs e)
-        {
-            emitter.ParticlesPerTick = tbParticlesPerTick.Value;
-            lblParticlesCount.Text = $"Частиц за тик: {tbParticlesPerTick.Value}";
-        }
-
-        private void TbOpacity_Scroll(object sender, EventArgs e)
-        {
-            emitter.Opacity = TbOpacity.Value / 100f;
-            lblOpacityCount.Text = $"Прозрачность: {TbOpacity.Value}";
+            this.Invalidate();
         }
 
         private void btnToggleRain_Click(object sender, EventArgs e)
         {
+            rainEnabled = !rainEnabled;
 
+            if (rainEnabled)
+            {
+                emitter.ParticlesPerTick = particlesPerTickBeforePause;
+                btnToggleRain.Text = "Выключить дождик";
+            }
+            else
+            {
+                particlesPerTickBeforePause = emitter.ParticlesPerTick;
+                emitter.ParticlesPerTick = 0;
+                btnToggleRain.Text = "Включить дождик";
+            }
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            grass.Draw(e.Graphics);
+            foreach (var flower in flowers)
+                flower.Draw(e.Graphics);
 
+            // Отрисовка частиц дождя
+            using (var bmp = new Bitmap(picDisplay.Width, picDisplay.Height))
+            using (var g = Graphics.FromImage(bmp))
+            {
+                emitter.Render(g);
+                e.Graphics.DrawImage(bmp, 0, 0);
+            }
+        }
+
+        // Остальные обработчики оставляем как есть
+        private void picDisplay_MouseMove(object sender, MouseEventArgs e) { }
+        private void theDirection_Scroll(object sender, EventArgs e) { }
+        private void tbParticlesPerTick_Scroll(object sender, EventArgs e) { }
+        private void TbOpacity_Scroll(object sender, EventArgs e) { }
         private void Form1_Load(object sender, EventArgs e) { }
     }
 
-        
-        
-    }
+}

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="AntiGravityPoint.cs" />
     <Compile Include="Emitter.cs" />
+    <Compile Include="Flower.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

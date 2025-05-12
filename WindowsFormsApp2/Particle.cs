@@ -71,4 +71,45 @@ namespace WindowsFormsApp2
             }
         }
     }
+
+
+    public class RainParticle
+    {
+        public float X, Y;
+        public float SpeedY;
+        public float Radius = 4;
+
+        public RainParticle(float x, float y, float speedY)
+        {
+            X = x;
+            Y = y;
+            SpeedY = speedY;
+        }
+
+        public void Update()
+        {
+            Y += SpeedY;
+        }
+
+        public void Draw(Graphics g)
+        {
+            g.FillEllipse(Brushes.Cyan, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+        }
+    }
+
+
+    public class Grass
+    {
+        public RectangleF Area;
+
+        public Grass(float width, float height, float grassHeight = 50)
+        {
+            Area = new RectangleF(0, height - grassHeight, width, grassHeight);
+        }
+
+        public void Draw(Graphics g)
+        {
+            g.FillRectangle(Brushes.LawnGreen, Area);
+        }
+    }
 }
