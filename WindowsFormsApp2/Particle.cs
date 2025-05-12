@@ -73,17 +73,20 @@ namespace WindowsFormsApp2
     }
 
 
-    public class RainParticle
+    public class ParticleRain
     {
         public float X, Y;
         public float SpeedY;
-        public float Radius = 4;
+        public float Length;
+        public Color Color;
 
-        public RainParticle(float x, float y, float speedY)
+        public ParticleRain(float x, float y, float speedY, float length, Color color)
         {
             X = x;
             Y = y;
             SpeedY = speedY;
+            Length = length;
+            Color = color;
         }
 
         public void Update()
@@ -93,7 +96,10 @@ namespace WindowsFormsApp2
 
         public void Draw(Graphics g)
         {
-            g.FillEllipse(Brushes.Cyan, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+            using (var pen = new Pen(Color, 2))
+            {
+                g.DrawLine(pen, X, Y, X, Y + Length);
+            }
         }
     }
 
@@ -102,7 +108,7 @@ namespace WindowsFormsApp2
     {
         public RectangleF Area;
 
-        public Grass(float width, float height, float grassHeight = 50)
+        public Grass(float width, float height, float grassHeight = 60)
         {
             Area = new RectangleF(0, height - grassHeight, width, grassHeight);
         }

@@ -32,14 +32,20 @@
             this.picDisplay = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnToggleRain = new System.Windows.Forms.Button();
+            this.tbParticlesPerTick = new System.Windows.Forms.TrackBar();
+            this.lblParticlesCount = new System.Windows.Forms.Label();
+            this.lblRainSpeed = new System.Windows.Forms.Label();
+            this.tbRainSpeed = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbParticlesPerTick)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbRainSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // picDisplay
             // 
             this.picDisplay.Location = new System.Drawing.Point(12, 12);
             this.picDisplay.Name = "picDisplay";
-            this.picDisplay.Size = new System.Drawing.Size(1192, 717);
+            this.picDisplay.Size = new System.Drawing.Size(1157, 717);
             this.picDisplay.TabIndex = 0;
             this.picDisplay.TabStop = false;
             this.picDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseMove);
@@ -52,7 +58,7 @@
             // 
             // btnToggleRain
             // 
-            this.btnToggleRain.Location = new System.Drawing.Point(1222, 12);
+            this.btnToggleRain.Location = new System.Drawing.Point(1175, 12);
             this.btnToggleRain.Name = "btnToggleRain";
             this.btnToggleRain.Size = new System.Drawing.Size(141, 45);
             this.btnToggleRain.TabIndex = 9;
@@ -60,18 +66,65 @@
             this.btnToggleRain.UseVisualStyleBackColor = true;
             this.btnToggleRain.Click += new System.EventHandler(this.btnToggleRain_Click);
             // 
+            // tbParticlesPerTick
+            // 
+            this.tbParticlesPerTick.Location = new System.Drawing.Point(1175, 96);
+            this.tbParticlesPerTick.Maximum = 100;
+            this.tbParticlesPerTick.Minimum = 1;
+            this.tbParticlesPerTick.Name = "tbParticlesPerTick";
+            this.tbParticlesPerTick.Size = new System.Drawing.Size(151, 58);
+            this.tbParticlesPerTick.TabIndex = 10;
+            this.tbParticlesPerTick.Value = 1;
+            this.tbParticlesPerTick.Scroll += new System.EventHandler(this.tbParticlesPerTick_Scroll);
+            // 
+            // lblParticlesCount
+            // 
+            this.lblParticlesCount.AutoSize = true;
+            this.lblParticlesCount.Location = new System.Drawing.Point(1186, 77);
+            this.lblParticlesCount.Name = "lblParticlesCount";
+            this.lblParticlesCount.Size = new System.Drawing.Size(98, 16);
+            this.lblParticlesCount.TabIndex = 11;
+            this.lblParticlesCount.Text = "Капель за тик";
+            // 
+            // lblRainSpeed
+            // 
+            this.lblRainSpeed.AutoSize = true;
+            this.lblRainSpeed.Location = new System.Drawing.Point(1200, 162);
+            this.lblRainSpeed.Name = "lblRainSpeed";
+            this.lblRainSpeed.Size = new System.Drawing.Size(111, 16);
+            this.lblRainSpeed.TabIndex = 13;
+            this.lblRainSpeed.Text = "Скорость дождя";
+            // 
+            // tbRainSpeed
+            // 
+            this.tbRainSpeed.Location = new System.Drawing.Point(1189, 181);
+            this.tbRainSpeed.Maximum = 30;
+            this.tbRainSpeed.Minimum = 2;
+            this.tbRainSpeed.Name = "tbRainSpeed";
+            this.tbRainSpeed.Size = new System.Drawing.Size(151, 58);
+            this.tbRainSpeed.TabIndex = 12;
+            this.tbRainSpeed.Value = 2;
+            this.tbRainSpeed.Scroll += new System.EventHandler(this.tbRainSpeed_Scroll);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1375, 779);
+            this.Controls.Add(this.lblRainSpeed);
+            this.Controls.Add(this.tbRainSpeed);
+            this.Controls.Add(this.lblParticlesCount);
+            this.Controls.Add(this.tbParticlesPerTick);
             this.Controls.Add(this.btnToggleRain);
             this.Controls.Add(this.picDisplay);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbParticlesPerTick)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbRainSpeed)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -80,6 +133,10 @@
         private System.Windows.Forms.PictureBox picDisplay;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnToggleRain;
+        private System.Windows.Forms.TrackBar tbParticlesPerTick;
+        private System.Windows.Forms.Label lblParticlesCount;
+        private System.Windows.Forms.Label lblRainSpeed;
+        private System.Windows.Forms.TrackBar tbRainSpeed;
     }
 }
 

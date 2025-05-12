@@ -14,34 +14,23 @@ namespace WindowsFormsApp2
     {
         List<Flower> flowers = new List<Flower>();
         Grass grass;
-        bool rainEnabled = false;
+        List<ParticleRain> rain = new List<ParticleRain>();
         Random rnd = new Random();
 
-        TopEmitter emitter;
-        int particlesPerTickBeforePause = 10; // сколько частиц вкл/выкл
+        bool rainEnabled = false;
+        int rainParticlesPerTick = 10;
+        int rainSpeed = 10;
 
         public Form1()
         {
             InitializeComponent();
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
-            this.DoubleBuffered = true;
-            this.Width = 900;
+            
+            // Размер формы и PictureBox
+            this.Width = 1200;
             this.Height = 650;
+            picDisplay.Width = 1200;
 
-            // Инициализация эмиттера дождя
-            emitter = new TopEmitter
-            {
-                Direction = 180,
-                Spreading = 30,
-                SpeedMin = 5,
-                SpeedMax = 10,
-                ColorFrom = Color.Cyan,
-                ColorTo = Color.FromArgb(0, Color.Blue),
-                ParticlesPerTick = 0, // <--- Дождик выключен по умолчанию!
-                X = picDisplay.Width / 2,
-                Y = 0,
-                Width = picDisplay.Width
-            };
 
             // Создать траву
             grass = new Grass(picDisplay.Width, picDisplay.Height, 60);
@@ -58,46 +47,55 @@ namespace WindowsFormsApp2
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            emitter.UpdateState();
-
-            // Обработка столкновений частиц дождя с цветами
-            foreach (var particle in emitter.particles.ToList())
+            // Дождик
+            if (rainEnabled)
             {
-                foreach (var flower in flowers)
+                for (int i = 0; i < rainParticlesPerTick; i++)
                 {
-                    if (flower.IsRainHit(particle.X, particle.Y))
-                    {
-                        flower.Grow();
-                        emitter.particles.Remove(particle); // Удаляем частицу при попадании
-                        break;
-                    }
+                    float rx = rnd.Next(0, picDisplay.Width);
+                    rain.Add(new ParticleRain(rx, 0, rainSpeed, 18, Color.DeepSkyBlue));
                 }
             }
 
-            // Обновление цветков (опадание лепестков)
+            // Обновление частиц дождя
+            for (int i = rain.Count - 1; i >= 0; i--)
+            {
+                rain[i].Update();
+                bool hit = false;
+                foreach (var flower in flowers)
+                {
+                    if (flower.IsRainHit(rain[i].X, rain[i].Y))
+                    {
+                        flower.Grow();
+                        hit = true;
+                        break;
+                    }
+                }
+                if (hit || rain[i].Y > picDisplay.Height)
+                    rain.RemoveAt(i);
+            }
+
+            // Обновление цветков
             foreach (var flower in flowers)
                 flower.UpdatePetals();
 
-            // Рисуем всё на Bitmap
+            // Рисуем всё
             DrawAll();
-
-            // Обновляем PictureBox
             picDisplay.Invalidate();
         }
 
         private void DrawAll()
         {
-            // Получаем bitmap из picDisplay
             Bitmap bmp = picDisplay.Image as Bitmap;
             if (bmp == null) return;
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 g.Clear(Color.White);
-
                 grass.Draw(g);
                 foreach (var flower in flowers)
                     flower.Draw(g);
-                emitter.Render(g);
+                foreach (var drop in rain)
+                    drop.Draw(g);
             }
 
         }
@@ -105,28 +103,28 @@ namespace WindowsFormsApp2
         private void btnToggleRain_Click(object sender, EventArgs e)
         {
             rainEnabled = !rainEnabled;
-
-            if (rainEnabled)
-            {
-                emitter.ParticlesPerTick = particlesPerTickBeforePause;
-                btnToggleRain.Text = "Выключить дождик";
-            }
-            else
-            {
-                particlesPerTickBeforePause = emitter.ParticlesPerTick > 0 ? emitter.ParticlesPerTick : particlesPerTickBeforePause;
-                emitter.ParticlesPerTick = 0;
-                btnToggleRain.Text = "Включить дождик";
-            }
+            btnToggleRain.Text = rainEnabled ? "Выключить дождик" : "Включить дождик";
+        
         }
 
         
 
         // Остальные обработчики оставляем как есть
         private void picDisplay_MouseMove(object sender, MouseEventArgs e) { }
-        private void theDirection_Scroll(object sender, EventArgs e) { }
-        private void tbParticlesPerTick_Scroll(object sender, EventArgs e) { }
-        private void TbOpacity_Scroll(object sender, EventArgs e) { }
+       
         private void Form1_Load(object sender, EventArgs e) { }
+
+        private void tbParticlesPerTick_Scroll(object sender, EventArgs e)
+        {
+            rainParticlesPerTick = tbParticlesPerTick.Value;
+            lblParticlesCount.Text = $"Капель за тик: {rainParticlesPerTick}";
+        }
+
+        private void tbRainSpeed_Scroll(object sender, EventArgs e)
+        {
+            rainSpeed = tbRainSpeed.Value;
+            lblRainSpeed.Text = $"Скорость дождя: {rainSpeed}";
+        }
     }
 
 }

@@ -9,11 +9,9 @@ namespace WindowsFormsApp2
 {
     public class Flower
     {
-        public float X, Y; // Центр цветка
-        public float StemHeight; // Высота стебля
+        public float X, Y;
+        public float StemHeight = 130;
         public float StemWidth = 12;
-        public float LeafAngle = 30;
-        public float LeafLength = 40;
         public int PetalCount = 7;
         public float PetalLength = 60;
         public float PetalWidth = 40;
@@ -21,7 +19,6 @@ namespace WindowsFormsApp2
         public float MaxPetalLength = 90;
         public float MinPetalLength = 40;
         public float CenterRadius = 38;
-        public bool IsBloomed = false;
         public bool PetalsFalling = false;
         public int PetalsToFall = 0;
         public List<float> PetalAngles = new List<float>();
@@ -31,12 +28,10 @@ namespace WindowsFormsApp2
         {
             X = x;
             Y = y;
-            StemHeight = 130;
             for (int i = 0; i < PetalCount; i++)
                 PetalAngles.Add(360f / PetalCount * i);
         }
 
-        // Проверка попадания частицы на лепесток
         public bool IsRainHit(float px, float py)
         {
             float dx = px - X;
@@ -45,7 +40,6 @@ namespace WindowsFormsApp2
             return r > CenterRadius && r < CenterRadius + PetalLength && Math.Abs(dy) < PetalLength + 10;
         }
 
-        // Рост цветка
         public void Grow()
         {
             if (!PetalsFalling && PetalLength < MaxPetalLength)
@@ -60,7 +54,6 @@ namespace WindowsFormsApp2
             }
         }
 
-        // Анимация опадания лепестков
         public void UpdatePetals()
         {
             if (PetalsFalling && PetalsToFall > 0)
@@ -79,15 +72,14 @@ namespace WindowsFormsApp2
             }
         }
 
-        // Рисование цветка
         public void Draw(Graphics g)
         {
             // Стебель
             g.FillRectangle(Brushes.Green, X - StemWidth / 2, Y - StemHeight, StemWidth, StemHeight);
 
             // Листочек
-            float leafX = X + (float)Math.Cos(LeafAngle * Math.PI / 180) * LeafLength;
-            float leafY = Y - StemHeight / 2 + (float)Math.Sin(LeafAngle * Math.PI / 180) * LeafLength;
+            float leafX = X + 40;
+            float leafY = Y - StemHeight / 2 + 20;
             g.FillEllipse(Brushes.Green, leafX - 18, leafY - 12, 36, 24);
 
             // Лепестки
@@ -105,13 +97,11 @@ namespace WindowsFormsApp2
             // Мордочка: глазки и улыбка
             float faceX = X;
             float faceY = Y - StemHeight;
-            // Глазки
             g.FillEllipse(Brushes.Black, faceX - 12, faceY - 10, 7, 7);
             g.FillEllipse(Brushes.Black, faceX + 5, faceY - 10, 7, 7);
-            // Улыбка
             g.DrawArc(Pens.Black, faceX - 10, faceY - 2, 20, 14, 20, 140);
         }
-}
+    }
 
 
 
