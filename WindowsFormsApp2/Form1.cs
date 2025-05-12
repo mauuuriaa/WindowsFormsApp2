@@ -17,13 +17,13 @@ namespace WindowsFormsApp2
         bool rainEnabled = false;
         Random rnd = new Random();
 
-        // Система частиц дождя
         TopEmitter emitter;
-        int particlesPerTickBeforePause;
+        int particlesPerTickBeforePause = 10; // сколько частиц вкл/выкл
 
         public Form1()
         {
             InitializeComponent();
+            picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
             this.DoubleBuffered = true;
             this.Width = 900;
             this.Height = 650;
@@ -37,20 +37,20 @@ namespace WindowsFormsApp2
                 SpeedMax = 10,
                 ColorFrom = Color.Cyan,
                 ColorTo = Color.FromArgb(0, Color.Blue),
-                ParticlesPerTick = 10,
-                X = this.Width / 2,
+                ParticlesPerTick = 0, // <--- Дождик выключен по умолчанию!
+                X = picDisplay.Width / 2,
                 Y = 0,
-                Width = this.Width
+                Width = picDisplay.Width
             };
 
             // Создать траву
-            grass = new Grass(this.Width, this.Height, 60);
+            grass = new Grass(picDisplay.Width, picDisplay.Height, 60);
 
             // Расположить 5 цветков
             for (int i = 0; i < 5; i++)
             {
                 float x = 120 + i * 160;
-                float y = this.Height - 70;
+                float y = picDisplay.Height - 70;
                 flowers.Add(new Flower(x, y));
             }
 
@@ -74,11 +74,32 @@ namespace WindowsFormsApp2
                 }
             }
 
-            // Обновление цветков
+            // Обновление цветков (опадание лепестков)
             foreach (var flower in flowers)
                 flower.UpdatePetals();
 
-            this.Invalidate();
+            // Рисуем всё на Bitmap
+            DrawAll();
+
+            // Обновляем PictureBox
+            picDisplay.Invalidate();
+        }
+
+        private void DrawAll()
+        {
+            // Получаем bitmap из picDisplay
+            Bitmap bmp = picDisplay.Image as Bitmap;
+            if (bmp == null) return;
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.White);
+
+                grass.Draw(g);
+                foreach (var flower in flowers)
+                    flower.Draw(g);
+                emitter.Render(g);
+            }
+
         }
 
         private void btnToggleRain_Click(object sender, EventArgs e)
@@ -92,27 +113,13 @@ namespace WindowsFormsApp2
             }
             else
             {
-                particlesPerTickBeforePause = emitter.ParticlesPerTick;
+                particlesPerTickBeforePause = emitter.ParticlesPerTick > 0 ? emitter.ParticlesPerTick : particlesPerTickBeforePause;
                 emitter.ParticlesPerTick = 0;
                 btnToggleRain.Text = "Включить дождик";
             }
         }
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            grass.Draw(e.Graphics);
-            foreach (var flower in flowers)
-                flower.Draw(e.Graphics);
-
-            // Отрисовка частиц дождя
-            using (var bmp = new Bitmap(picDisplay.Width, picDisplay.Height))
-            using (var g = Graphics.FromImage(bmp))
-            {
-                emitter.Render(g);
-                e.Graphics.DrawImage(bmp, 0, 0);
-            }
-        }
+        
 
         // Остальные обработчики оставляем как есть
         private void picDisplay_MouseMove(object sender, MouseEventArgs e) { }
