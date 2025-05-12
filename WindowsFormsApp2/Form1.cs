@@ -28,10 +28,10 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
 
-            this.Width = 1250;
-            this.Height = 800;
-            picDisplay.Width = 1200;
-            picDisplay.Height = 650;
+            //this.Width = 1250;
+            //this.Height = 800;
+            //picDisplay.Width = 1200;
+            //picDisplay.Height = 650;
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
             grass = new Grass(picDisplay.Width, picDisplay.Height, 60);
@@ -39,7 +39,7 @@ namespace WindowsFormsApp2
             // 3 цветка, красиво распределены
             for (int i = 0; i < 3; i++)
             {
-                float x = 300 + i * 300;
+                float x = 100 + i * 250;
                 float y = picDisplay.Height - 70;
                 flowers.Add(new Flower(x, y, petalColor));
             }
@@ -182,6 +182,36 @@ namespace WindowsFormsApp2
             }
         }
 
+        private void btnPetalColor_Click_1(object sender, EventArgs e)
+        {
+            using (ColorDialog dlg = new ColorDialog())
+            {
+                dlg.Color = petalColor;
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    petalColor = dlg.Color;
+                    foreach (var flower in flowers)
+                        flower.SetPetalColor(petalColor);
+                    DrawAll();
+                    picDisplay.Invalidate();
+                }
+            }
+        }
+
+        // Кнопка "падение лепестков" (если нужно)
+        private void btnDropPetals_Click(object sender, EventArgs e)
+        {
+            foreach (var flower in flowers)
+                flower.DropAllPetals();
+        }
+
+        // Кнопка "вырастить лепестки" (если нужно)
+        private void btnGrowPetals_Click(object sender, EventArgs e)
+        {
+            foreach (var flower in flowers)
+                flower.GrowAllPetals();
+        }
+
         private void picDisplay_MouseMove(object sender, MouseEventArgs e) { }
         private void Form1_Load(object sender, EventArgs e) { }
 
@@ -196,6 +226,11 @@ namespace WindowsFormsApp2
             btnNight.Text = isNight ? "Вернуть день" : "Наступила ночь";
             DrawAll();
             picDisplay.Invalidate();
+        }
+
+        private void btnWind_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

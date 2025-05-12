@@ -139,5 +139,8 @@ namespace WindowsFormsApp2
             g.FillRectangle(Brushes.LawnGreen, Area);
         }
     }
+
+
+
 }
 

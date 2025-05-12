@@ -37,6 +37,8 @@
             this.lblRainSpeed = new System.Windows.Forms.Label();
             this.tbRainSpeed = new System.Windows.Forms.TrackBar();
             this.btnNight = new System.Windows.Forms.Button();
+            this.btnPetalColor = new System.Windows.Forms.Button();
+            this.btnWind = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbParticlesPerTick)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbRainSpeed)).BeginInit();
@@ -46,7 +48,7 @@
             // 
             this.picDisplay.Location = new System.Drawing.Point(12, 12);
             this.picDisplay.Name = "picDisplay";
-            this.picDisplay.Size = new System.Drawing.Size(1157, 717);
+            this.picDisplay.Size = new System.Drawing.Size(1017, 717);
             this.picDisplay.TabIndex = 0;
             this.picDisplay.TabStop = false;
             this.picDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseMove);
@@ -59,7 +61,7 @@
             // 
             // btnToggleRain
             // 
-            this.btnToggleRain.Location = new System.Drawing.Point(1175, 12);
+            this.btnToggleRain.Location = new System.Drawing.Point(1050, 16);
             this.btnToggleRain.Name = "btnToggleRain";
             this.btnToggleRain.Size = new System.Drawing.Size(141, 45);
             this.btnToggleRain.TabIndex = 9;
@@ -69,7 +71,7 @@
             // 
             // tbParticlesPerTick
             // 
-            this.tbParticlesPerTick.Location = new System.Drawing.Point(1175, 96);
+            this.tbParticlesPerTick.Location = new System.Drawing.Point(1050, 100);
             this.tbParticlesPerTick.Maximum = 100;
             this.tbParticlesPerTick.Minimum = 1;
             this.tbParticlesPerTick.Name = "tbParticlesPerTick";
@@ -81,7 +83,7 @@
             // lblParticlesCount
             // 
             this.lblParticlesCount.AutoSize = true;
-            this.lblParticlesCount.Location = new System.Drawing.Point(1186, 77);
+            this.lblParticlesCount.Location = new System.Drawing.Point(1061, 81);
             this.lblParticlesCount.Name = "lblParticlesCount";
             this.lblParticlesCount.Size = new System.Drawing.Size(98, 16);
             this.lblParticlesCount.TabIndex = 11;
@@ -90,7 +92,7 @@
             // lblRainSpeed
             // 
             this.lblRainSpeed.AutoSize = true;
-            this.lblRainSpeed.Location = new System.Drawing.Point(1186, 162);
+            this.lblRainSpeed.Location = new System.Drawing.Point(1061, 166);
             this.lblRainSpeed.Name = "lblRainSpeed";
             this.lblRainSpeed.Size = new System.Drawing.Size(111, 16);
             this.lblRainSpeed.TabIndex = 13;
@@ -99,7 +101,7 @@
             // 
             // tbRainSpeed
             // 
-            this.tbRainSpeed.Location = new System.Drawing.Point(1175, 181);
+            this.tbRainSpeed.Location = new System.Drawing.Point(1050, 185);
             this.tbRainSpeed.Maximum = 30;
             this.tbRainSpeed.Minimum = 2;
             this.tbRainSpeed.Name = "tbRainSpeed";
@@ -110,7 +112,7 @@
             // 
             // btnNight
             // 
-            this.btnNight.Location = new System.Drawing.Point(1175, 245);
+            this.btnNight.Location = new System.Drawing.Point(1050, 249);
             this.btnNight.Name = "btnNight";
             this.btnNight.Size = new System.Drawing.Size(141, 45);
             this.btnNight.TabIndex = 14;
@@ -118,11 +120,33 @@
             this.btnNight.UseVisualStyleBackColor = true;
             this.btnNight.Click += new System.EventHandler(this.btnNight_Click_1);
             // 
+            // btnPetalColor
+            // 
+            this.btnPetalColor.Location = new System.Drawing.Point(1050, 331);
+            this.btnPetalColor.Name = "btnPetalColor";
+            this.btnPetalColor.Size = new System.Drawing.Size(141, 45);
+            this.btnPetalColor.TabIndex = 15;
+            this.btnPetalColor.Text = "Цвет цветочка";
+            this.btnPetalColor.UseVisualStyleBackColor = true;
+            this.btnPetalColor.Click += new System.EventHandler(this.btnPetalColor_Click_1);
+            // 
+            // btnWind
+            // 
+            this.btnWind.Location = new System.Drawing.Point(1050, 409);
+            this.btnWind.Name = "btnWind";
+            this.btnWind.Size = new System.Drawing.Size(141, 45);
+            this.btnWind.TabIndex = 16;
+            this.btnWind.Text = "Включить ветер";
+            this.btnWind.UseVisualStyleBackColor = true;
+            this.btnWind.Click += new System.EventHandler(this.btnWind_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1375, 779);
+            this.ClientSize = new System.Drawing.Size(1224, 779);
+            this.Controls.Add(this.btnWind);
+            this.Controls.Add(this.btnPetalColor);
             this.Controls.Add(this.btnNight);
             this.Controls.Add(this.lblRainSpeed);
             this.Controls.Add(this.tbRainSpeed);
@@ -151,6 +175,8 @@
         private System.Windows.Forms.Label lblRainSpeed;
         private System.Windows.Forms.TrackBar tbRainSpeed;
         private System.Windows.Forms.Button btnNight;
+        private System.Windows.Forms.Button btnPetalColor;
+        private System.Windows.Forms.Button btnWind;
     }
 }
 
