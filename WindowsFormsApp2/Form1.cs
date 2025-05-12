@@ -10,7 +10,8 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp2
 {
-    public partial class Form1 : Form
+    
+public partial class Form1 : Form
     {
         List<Flower> flowers = new List<Flower>();
         Grass grass;
@@ -34,7 +35,7 @@ namespace WindowsFormsApp2
             //picDisplay.Height = 650;
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
-            grass = new Grass(picDisplay.Width, picDisplay.Height, 60);
+            grass = new Grass(picDisplay.Width, picDisplay.Height, 70);
 
             // 3 цветка, красиво распределены
             for (int i = 0; i < 3; i++)
@@ -230,7 +231,7 @@ namespace WindowsFormsApp2
 
         private void btnWind_Click(object sender, EventArgs e)
         {
-            
+
         }
     }
 }

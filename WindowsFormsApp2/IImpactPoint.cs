@@ -11,13 +11,15 @@ namespace WindowsFormsApp2
     {
         public int X;
         public int Y;
-
-        public abstract void ImpactParticle(Particle particle);
+        //public int Power = 100;
+        public abstract void ImpactParticle(Petal petal) ;
 
         public virtual void Render(Graphics g)
         {
             g.DrawEllipse(Pens.Red, X - 5, Y - 5, 10, 10);
         }
     }
+
+
 }
     

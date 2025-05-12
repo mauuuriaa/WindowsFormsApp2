@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApp2
 {
-    public class AntiGravityPoint : IImpactPoint
+    /*public class AntiGravityPoint : IImpactPoint
     {
         public int Power = 100; // сила отторжения
 
@@ -20,5 +20,5 @@ namespace WindowsFormsApp2
             particle.SpeedX -= gX * Power / r2; // тут минусики вместо плюсов
             particle.SpeedY -= gY * Power / r2; // и тут
         }
-    }
+    }*/
 }

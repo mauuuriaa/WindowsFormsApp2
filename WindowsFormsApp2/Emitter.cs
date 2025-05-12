@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApp2
 {
-    public class Emitter
+    /*public class Emitter
     {
         public List<Particle> particles = new List<Particle>();
         public int MousePositionX;
@@ -110,5 +110,5 @@ namespace WindowsFormsApp2
             particle.SpeedY = 1;
             particle.SpeedX = Particle.rand.Next(-2, 3);
         }
-    }
+    }*/
 }
