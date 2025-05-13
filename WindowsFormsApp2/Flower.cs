@@ -179,7 +179,7 @@ public class Petal
         this.PetalColor = petalColor;
     }
 
-    public bool IsFullyGrown => !IsFalling && Length >= MaxLength - 0.1f;
+    public bool IsFullyGrown => !IsFalling && Length >= MaxLength - 10.1f;
     public bool IsDead => OnGround && Opacity <= 0.01f;
 
     public void Grow()
@@ -244,7 +244,6 @@ public class Petal
         }
     }
 }
-
 
 
 

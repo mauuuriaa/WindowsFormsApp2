@@ -10,8 +10,8 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp2
 {
-    
-public partial class Form1 : Form
+
+    public partial class Form1 : Form
     {
         List<Flower> flowers = new List<Flower>();
         Grass grass;
@@ -24,6 +24,12 @@ public partial class Form1 : Form
 
         bool isNight = false;
         Color petalColor = Color.Pink;
+
+        private WindPoint windPoint = new WindPoint();
+        private bool windEnabled = false;
+
+        private HurricanePoint hurricanePoint = new HurricanePoint();
+        private bool hurricaneEnabled = false;
 
         public Form1()
         {
@@ -55,46 +61,57 @@ public partial class Form1 : Form
         private void timer1_Tick(object sender, EventArgs e)
         {
             // Дождик
-            if (rainEnabled)
             {
-                for (int i = 0; i < rainParticlesPerTick; i++)
+                if (rainEnabled)
                 {
-                    float rx = rnd.Next(0, picDisplay.Width);
-                    rain.Add(new ParticleRain(rx, 0, rainSpeed, 18, Color.DeepSkyBlue));
-                }
-            }
-
-            // Обновление частиц дождя
-            for (int i = rain.Count - 1; i >= 0; i--)
-            {
-                rain[i].Update(grass, flowers);
-
-                // Проверка столкновения с травой (капля исчезает красиво)
-                if (rain[i].Y + rain[i].Length >= grass.Area.Top)
-                    rain[i].StartFade();
-
-                // Проверка столкновения с сердцевиной цветка (рост всех лепестков)
-                foreach (var flower in flowers)
-                {
-                    if (flower.IsRainHit(rain[i].X, rain[i].Y))
+                    for (int i = 0; i < rainParticlesPerTick; i++)
                     {
-                        rain[i].StartFade();
-                        break;
+                        float rx = rnd.Next(0, picDisplay.Width);
+                        rain.Add(new ParticleRain(rx, 0, rainSpeed, 18, Color.DeepSkyBlue));
                     }
                 }
 
-                // Удаляем каплю, если она полностью исчезла
-                if (rain[i].Opacity <= 0)
-                    rain.RemoveAt(i);
+                for (int i = rain.Count - 1; i >= 0; i--)
+                {
+                    rain[i].Update(grass, flowers);
+
+                    if (rain[i].Y + rain[i].Length >= grass.Area.Top)
+                        rain[i].StartFade();
+
+                    foreach (var flower in flowers)
+                    {
+                        if (flower.IsRainHit(rain[i].X, rain[i].Y))
+                        {
+                            rain[i].StartFade();
+                            break;
+                        }
+                    }
+
+                    if (rain[i].Opacity <= 0)
+                        rain.RemoveAt(i);
+                }
+
+                foreach (var flower in flowers)
+                {
+                    flower.UpdatePetals(grass.Area.Top);
+
+                    foreach (var petal in flower.Petals)
+                    {
+                        if (windEnabled)
+                            windPoint.ImpactParticle(petal);
+
+                        // Проверяем, вылетел ли лепесток за границы экрана
+                        if (petal.FallX < 0 || petal.FallX > picDisplay.Width || petal.FallY > picDisplay.Height)
+                        {
+                            petal.Opacity = 0; // Лепесток исчезает
+                            petal.OnGround = true;
+                        }
+                    }
+                }
+
+                DrawAll();
+                picDisplay.Invalidate();
             }
-
-            // Обновление цветков (лепестки растут, падают, растворяются)
-            foreach (var flower in flowers)
-                flower.UpdatePetals(grass.Area.Top);
-
-            // Рисуем всё
-            DrawAll();
-            picDisplay.Invalidate();
         }
 
         private void DrawAll()
@@ -105,7 +122,6 @@ public partial class Form1 : Form
             {
                 g.Clear(isNight ? Color.FromArgb(30, 30, 60) : Color.White);
 
-                // Солнце или луна
                 if (!isNight)
                     DrawSun(g);
                 else
@@ -116,6 +132,9 @@ public partial class Form1 : Form
                     flower.Draw(g, isNight);
                 foreach (var drop in rain)
                     drop.Draw(g);
+
+                if (windEnabled)
+                    windPoint.Render(g);
             }
         }
 
@@ -213,7 +232,13 @@ public partial class Form1 : Form
                 flower.GrowAllPetals();
         }
 
-        private void picDisplay_MouseMove(object sender, MouseEventArgs e) { }
+        private void picDisplay_MouseMove(object sender, MouseEventArgs e) {
+            if (windEnabled)
+            {
+                windPoint.X = e.X;
+                windPoint.Y = e.Y;
+            }
+        }
         private void Form1_Load(object sender, EventArgs e) { }
 
         private void lblRainSpeed_Click(object sender, EventArgs e)
@@ -231,7 +256,9 @@ public partial class Form1 : Form
 
         private void btnWind_Click(object sender, EventArgs e)
         {
-
+            windEnabled = !windEnabled;
+            windPoint.IsActive = windEnabled;
+            btnWind.Text = windEnabled ? "Выключить ветер" : "Включить ветер";
         }
     }
 }

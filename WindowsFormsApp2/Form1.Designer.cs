@@ -72,12 +72,12 @@
             // tbParticlesPerTick
             // 
             this.tbParticlesPerTick.Location = new System.Drawing.Point(1050, 100);
-            this.tbParticlesPerTick.Maximum = 100;
-            this.tbParticlesPerTick.Minimum = 1;
+            this.tbParticlesPerTick.Maximum = 20;
+            this.tbParticlesPerTick.Minimum = 5;
             this.tbParticlesPerTick.Name = "tbParticlesPerTick";
             this.tbParticlesPerTick.Size = new System.Drawing.Size(151, 58);
             this.tbParticlesPerTick.TabIndex = 10;
-            this.tbParticlesPerTick.Value = 1;
+            this.tbParticlesPerTick.Value = 5;
             this.tbParticlesPerTick.Scroll += new System.EventHandler(this.tbParticlesPerTick_Scroll);
             // 
             // lblParticlesCount
@@ -102,12 +102,12 @@
             // tbRainSpeed
             // 
             this.tbRainSpeed.Location = new System.Drawing.Point(1050, 185);
-            this.tbRainSpeed.Maximum = 30;
-            this.tbRainSpeed.Minimum = 2;
+            this.tbRainSpeed.Maximum = 20;
+            this.tbRainSpeed.Minimum = 10;
             this.tbRainSpeed.Name = "tbRainSpeed";
             this.tbRainSpeed.Size = new System.Drawing.Size(151, 58);
             this.tbRainSpeed.TabIndex = 12;
-            this.tbRainSpeed.Value = 2;
+            this.tbRainSpeed.Value = 10;
             this.tbRainSpeed.Scroll += new System.EventHandler(this.tbRainSpeed_Scroll);
             // 
             // btnNight
