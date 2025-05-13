@@ -60,59 +60,56 @@ namespace WindowsFormsApp2
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            // Дождик
+            if (rainEnabled)
             {
-                if (rainEnabled)
+                for (int i = 0; i < rainParticlesPerTick; i++)
                 {
-                    for (int i = 0; i < rainParticlesPerTick; i++)
-                    {
-                        float rx = rnd.Next(0, picDisplay.Width);
-                        rain.Add(new ParticleRain(rx, 0, rainSpeed, 18, Color.DeepSkyBlue));
-                    }
+                    float rx = rnd.Next(0, picDisplay.Width);
+                    rain.Add(new ParticleRain(rx, 0, rainSpeed, 18, Color.DeepSkyBlue));
                 }
+            }
 
-                for (int i = rain.Count - 1; i >= 0; i--)
-                {
-                    rain[i].Update(grass, flowers);
+            for (int i = rain.Count - 1; i >= 0; i--)
+            {
+                rain[i].Update(grass, flowers);
 
-                    if (rain[i].Y + rain[i].Length >= grass.Area.Top)
-                        rain[i].StartFade();
-
-                    foreach (var flower in flowers)
-                    {
-                        if (flower.IsRainHit(rain[i].X, rain[i].Y))
-                        {
-                            rain[i].StartFade();
-                            break;
-                        }
-                    }
-
-                    if (rain[i].Opacity <= 0)
-                        rain.RemoveAt(i);
-                }
+                if (rain[i].Y + rain[i].Length >= grass.Area.Top)
+                    rain[i].StartFade();
 
                 foreach (var flower in flowers)
                 {
-                    flower.UpdatePetals(grass.Area.Top);
-
-                    foreach (var petal in flower.Petals)
+                    if (flower.IsRainHit(rain[i].X, rain[i].Y))
                     {
-                        if (windEnabled)
-                            windPoint.ImpactParticle(petal);
-
-                        // Проверяем, вылетел ли лепесток за границы экрана
-                        if (petal.FallX < 0 || petal.FallX > picDisplay.Width || petal.FallY > picDisplay.Height)
-                        {
-                            petal.Opacity = 0; // Лепесток исчезает
-                            petal.OnGround = true;
-                        }
+                        rain[i].StartFade();
+                        break;
                     }
                 }
 
-                DrawAll();
-                picDisplay.Invalidate();
+                if (rain[i].Opacity <= 0)
+                    rain.RemoveAt(i);
             }
+
+            foreach (var flower in flowers)
+            {
+                flower.UpdatePetals(grass.Area.Top);
+
+                foreach (var petal in flower.Petals)
+                {
+                    if (hurricaneEnabled)
+                        hurricanePoint.ImpactParticle(petal);
+
+                    if (petal.FallX < 0 || petal.FallX > picDisplay.Width || petal.FallY > picDisplay.Height)
+                    {
+                        petal.Opacity = 0;
+                        petal.OnGround = true;
+                    }
+                }
+            }
+
+            DrawAll();
+            picDisplay.Invalidate();
         }
+
 
         private void DrawAll()
         {
@@ -133,10 +130,11 @@ namespace WindowsFormsApp2
                 foreach (var drop in rain)
                     drop.Draw(g);
 
-                if (windEnabled)
-                    windPoint.Render(g);
+                if (hurricaneEnabled)
+                    hurricanePoint.Render(g);
             }
         }
+
 
         private void DrawSun(Graphics g)
         {
@@ -259,6 +257,19 @@ namespace WindowsFormsApp2
             windEnabled = !windEnabled;
             windPoint.IsActive = windEnabled;
             btnWind.Text = windEnabled ? "Выключить ветер" : "Включить ветер";
+        }
+
+        private void btnHurricane_Click(object sender, EventArgs e)
+        {
+            hurricaneEnabled = !hurricaneEnabled;
+            hurricanePoint.IsActive = hurricaneEnabled;
+            btnHurricane.Text = hurricaneEnabled ? "Выключить ураган" : "Включить ураган";
+
+            if (hurricaneEnabled)
+            {
+                hurricanePoint.X = picDisplay.Width / 2;
+                hurricanePoint.Y = picDisplay.Height / 2;
+            }
         }
     }
 }
