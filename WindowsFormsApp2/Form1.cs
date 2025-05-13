@@ -25,8 +25,8 @@ namespace WindowsFormsApp2
         bool isNight = false;
         Color petalColor = Color.Pink;
 
-        private WindPoint windPoint = new WindPoint();
-        private bool windEnabled = false;
+
+
 
         private HurricanePoint hurricanePoint = new HurricanePoint();
         private bool hurricaneEnabled = false;
@@ -35,15 +35,13 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
 
-            //this.Width = 1250;
-            //this.Height = 800;
-            //picDisplay.Width = 1200;
-            //picDisplay.Height = 650;
+            
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
             grass = new Grass(picDisplay.Width, picDisplay.Height, 70);
+            btnHurricane.Visible = false;
 
-            // 3 цветка, красиво распределены
+            // 3 цветка
             for (int i = 0; i < 3; i++)
             {
                 float x = 100 + i * 250;
@@ -51,7 +49,7 @@ namespace WindowsFormsApp2
                 flowers.Add(new Flower(x, y, petalColor));
             }
 
-            // Привязка трекбаров и лейблов (если есть)
+            // Привязка трекбаров и лейблов 
             rainParticlesPerTick = tbParticlesPerTick.Value;
             rainSpeed = tbRainSpeed.Value;
             lblParticlesCount.Text = $"Капель за тик: {rainParticlesPerTick}";
@@ -162,6 +160,14 @@ namespace WindowsFormsApp2
         {
             rainEnabled = !rainEnabled;
             btnToggleRain.Text = rainEnabled ? "Выключить дождик" : "Включить дождик";
+            btnHurricane.Visible = rainEnabled;
+
+            if (!rainEnabled)
+            {
+                hurricaneEnabled = false;
+                hurricanePoint.IsActive = false;
+                btnHurricane.Text = "Включить ураган";
+            }
         }
 
         private void tbParticlesPerTick_Scroll(object sender, EventArgs e)
@@ -176,30 +182,9 @@ namespace WindowsFormsApp2
             lblRainSpeed.Text = $"Скорость дождя: {rainSpeed}";
         }
 
-        private void btnNight_Click(object sender, EventArgs e)
-        {
-            isNight = !isNight;
-            btnNight.Text = isNight ? "Вернуть день" : "Наступила ночь";
-            DrawAll();
-            picDisplay.Invalidate();
-        }
+        
 
-        private void btnPetalColor_Click(object sender, EventArgs e)
-        {
-            using (ColorDialog dlg = new ColorDialog())
-            {
-                dlg.Color = petalColor;
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    petalColor = dlg.Color;
-                    foreach (var flower in flowers)
-                        flower.SetPetalColor(petalColor);
-                    DrawAll();
-                    picDisplay.Invalidate();
-                }
-            }
-        }
-
+        
         private void btnPetalColor_Click_1(object sender, EventArgs e)
         {
             using (ColorDialog dlg = new ColorDialog())
@@ -216,26 +201,12 @@ namespace WindowsFormsApp2
             }
         }
 
-        // Кнопка "падение лепестков" (если нужно)
-        private void btnDropPetals_Click(object sender, EventArgs e)
-        {
-            foreach (var flower in flowers)
-                flower.DropAllPetals();
-        }
+       
 
-        // Кнопка "вырастить лепестки" (если нужно)
-        private void btnGrowPetals_Click(object sender, EventArgs e)
-        {
-            foreach (var flower in flowers)
-                flower.GrowAllPetals();
-        }
+        
 
         private void picDisplay_MouseMove(object sender, MouseEventArgs e) {
-            if (windEnabled)
-            {
-                windPoint.X = e.X;
-                windPoint.Y = e.Y;
-            }
+            
         }
         private void Form1_Load(object sender, EventArgs e) { }
 
@@ -252,12 +223,7 @@ namespace WindowsFormsApp2
             picDisplay.Invalidate();
         }
 
-        private void btnWind_Click(object sender, EventArgs e)
-        {
-            windEnabled = !windEnabled;
-            windPoint.IsActive = windEnabled;
-            btnWind.Text = windEnabled ? "Выключить ветер" : "Включить ветер";
-        }
+        
 
         private void btnHurricane_Click(object sender, EventArgs e)
         {
@@ -267,8 +233,8 @@ namespace WindowsFormsApp2
 
             if (hurricaneEnabled)
             {
-                hurricanePoint.X = picDisplay.Width / 2;
-                hurricanePoint.Y = picDisplay.Height / 2;
+                hurricanePoint.X = picDisplay.Width / 2 ;
+                hurricanePoint.Y = picDisplay.Height / 2 - 70;
             }
         }
     }

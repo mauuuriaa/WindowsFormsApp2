@@ -157,6 +157,8 @@ public class Petal
     public float Opacity; // прозрачность (для растворения на земле)
     public bool OnGround; // уже на земле
     public Color PetalColor = Color.Pink;
+    public float FlowerOffsetX = 0;
+    public float FlowerOffsetY = 0;
 
     private float flowerX, flowerY, stemHeight, centerRadius;
     private static Random rnd = new Random();
@@ -221,6 +223,17 @@ public class Petal
             Opacity -= 0.025f;
             if (Opacity < 0) Opacity = 0;
         }
+    }
+    public float GetCurrentX()
+    {
+        float angleRad = Angle * (float)Math.PI / 180f;
+        return flowerX + (float)Math.Cos(angleRad) * (centerRadius + Length / 2) + FlowerOffsetX;
+    }
+
+    public float GetCurrentY()
+    {
+        float angleRad = Angle * (float)Math.PI / 180f;
+        return flowerY - stemHeight + (float)Math.Sin(angleRad) * (centerRadius + Length / 2) + FlowerOffsetY;
     }
 
     public void Draw(Graphics g, float flowerX, float flowerY, float stemHeight, float centerRadius)

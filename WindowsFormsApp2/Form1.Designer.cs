@@ -38,7 +38,6 @@
             this.tbRainSpeed = new System.Windows.Forms.TrackBar();
             this.btnNight = new System.Windows.Forms.Button();
             this.btnPetalColor = new System.Windows.Forms.Button();
-            this.btnWind = new System.Windows.Forms.Button();
             this.btnHurricane = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbParticlesPerTick)).BeginInit();
@@ -131,19 +130,9 @@
             this.btnPetalColor.UseVisualStyleBackColor = true;
             this.btnPetalColor.Click += new System.EventHandler(this.btnPetalColor_Click_1);
             // 
-            // btnWind
-            // 
-            this.btnWind.Location = new System.Drawing.Point(1050, 409);
-            this.btnWind.Name = "btnWind";
-            this.btnWind.Size = new System.Drawing.Size(141, 45);
-            this.btnWind.TabIndex = 16;
-            this.btnWind.Text = "Включить ветер";
-            this.btnWind.UseVisualStyleBackColor = true;
-            this.btnWind.Click += new System.EventHandler(this.btnWind_Click);
-            // 
             // btnHurricane
             // 
-            this.btnHurricane.Location = new System.Drawing.Point(1050, 472);
+            this.btnHurricane.Location = new System.Drawing.Point(1050, 404);
             this.btnHurricane.Name = "btnHurricane";
             this.btnHurricane.Size = new System.Drawing.Size(141, 45);
             this.btnHurricane.TabIndex = 17;
@@ -157,7 +146,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1224, 779);
             this.Controls.Add(this.btnHurricane);
-            this.Controls.Add(this.btnWind);
             this.Controls.Add(this.btnPetalColor);
             this.Controls.Add(this.btnNight);
             this.Controls.Add(this.lblRainSpeed);
@@ -167,7 +155,7 @@
             this.Controls.Add(this.btnToggleRain);
             this.Controls.Add(this.picDisplay);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Три цветочка";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbParticlesPerTick)).EndInit();
@@ -188,7 +176,6 @@
         private System.Windows.Forms.TrackBar tbRainSpeed;
         private System.Windows.Forms.Button btnNight;
         private System.Windows.Forms.Button btnPetalColor;
-        private System.Windows.Forms.Button btnWind;
         private System.Windows.Forms.Button btnHurricane;
     }
 }
