@@ -140,7 +140,47 @@ namespace WindowsFormsApp2
         }
     }
 
+    public class WateringCan
+    {
+        public bool IsActive = false;
+        public int X, Y;
+        private Random rnd = new Random();
+        private Color waterColor = Color.FromArgb(150, 30, 144, 255);
 
+        public List<ParticleRain> SpawnWaterParticles(int count)
+        {
+            var particles = new List<ParticleRain>();
+            for (int i = 0; i < count; i++)
+            {
+                float rx = X + rnd.Next(-20, 20);
+                float ry = Y + rnd.Next(-10, 10);
+                particles.Add(new ParticleRain(rx, ry, 5, 12, waterColor));
+            }
+            return particles;
+        }
+    }
 
+    public class Umbrella
+    {
+        public bool IsActive = false;
+        public int X, Y;
+        public int Radius = 80;
+
+        public bool CheckCollision(float px, float py)
+        {
+            float dx = px - X;
+            float dy = py - Y;
+            return dx * dx + dy * dy <= Radius * Radius;
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
 

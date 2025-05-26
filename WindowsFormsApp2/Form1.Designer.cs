@@ -39,6 +39,8 @@
             this.btnNight = new System.Windows.Forms.Button();
             this.btnPetalColor = new System.Windows.Forms.Button();
             this.btnHurricane = new System.Windows.Forms.Button();
+            this.btnUmbrella = new System.Windows.Forms.Button();
+            this.btnWateringCan = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbParticlesPerTick)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbRainSpeed)).BeginInit();
@@ -140,11 +142,33 @@
             this.btnHurricane.UseVisualStyleBackColor = true;
             this.btnHurricane.Click += new System.EventHandler(this.btnHurricane_Click);
             // 
+            // btnUmbrella
+            // 
+            this.btnUmbrella.Location = new System.Drawing.Point(1050, 618);
+            this.btnUmbrella.Name = "btnUmbrella";
+            this.btnUmbrella.Size = new System.Drawing.Size(141, 45);
+            this.btnUmbrella.TabIndex = 18;
+            this.btnUmbrella.Text = "Зонтик";
+            this.btnUmbrella.UseVisualStyleBackColor = true;
+            this.btnUmbrella.Click += new System.EventHandler(this.btnUmbrella_Click);
+            // 
+            // btnWateringCan
+            // 
+            this.btnWateringCan.Location = new System.Drawing.Point(1050, 684);
+            this.btnWateringCan.Name = "btnWateringCan";
+            this.btnWateringCan.Size = new System.Drawing.Size(141, 45);
+            this.btnWateringCan.TabIndex = 19;
+            this.btnWateringCan.Text = "Полить цветочки";
+            this.btnWateringCan.UseVisualStyleBackColor = true;
+            this.btnWateringCan.Click += new System.EventHandler(this.btnWateringCan_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1224, 779);
+            this.Controls.Add(this.btnWateringCan);
+            this.Controls.Add(this.btnUmbrella);
             this.Controls.Add(this.btnHurricane);
             this.Controls.Add(this.btnPetalColor);
             this.Controls.Add(this.btnNight);
@@ -177,6 +201,8 @@
         private System.Windows.Forms.Button btnNight;
         private System.Windows.Forms.Button btnPetalColor;
         private System.Windows.Forms.Button btnHurricane;
+        private System.Windows.Forms.Button btnUmbrella;
+        private System.Windows.Forms.Button btnWateringCan;
     }
 }
 
